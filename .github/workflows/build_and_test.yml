@@ -1,0 +1,31 @@
+name: Build_and_Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build_and_test:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Repo checkout
+      uses: actions/checkout@v6
+      
+    - name: Use Node.js 24
+      uses: actions/setup-node@v6
+      with:
+        node-version: 24
+        cache: 'npm'
+        
+    - name: Clean install project dependencies    
+      run: npm ci
+
+    - name: Build  
+      run: npm run build --if-present
+
+    - name: Test  
+      run: npm test
